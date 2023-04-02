@@ -1,16 +1,16 @@
-import { AxiosInstance } from "axios";
+import { AxiosInstance } from 'axios';
 
 export enum GoalCellType {
-  SPACE = "SPACE",
-  POLYANET = "POLYANET",
-  SOLOONS = "SOLOON",
-  COMETHS = "COMETH",
+  SPACE = 'SPACE',
+  POLYANET = 'POLYANET',
+  SOLOONS = 'SOLOON',
+  COMETHS = 'COMETH',
 }
 
 export enum AstralObjectType {
-  POLYANET = "polyanets",
-  SOLOONS = "soloons",
-  COMETHS = "comeths",
+  POLYANET = 'polyanets',
+  SOLOONS = 'soloons',
+  COMETHS = 'comeths',
 }
 
 interface AstralObjectParams {
@@ -27,9 +27,7 @@ export interface AstralObject {
   value: string;
 
   doCrossRequest(axios: AxiosInstance, candidateId: string): Promise<void>;
-  verify(
-    value: { type: number; color?: string; direction?: string } | null
-  ): Boolean;
+  verify(value: { type: number; color?: string; direction?: string } | null): boolean;
 }
 
 class AstralStrategy {
@@ -41,7 +39,7 @@ class AstralStrategy {
   constructor({ row, column, type, value }: AstralObjectParams) {
     this.row = row;
     this.column = column;
-    this.type = (type.toLowerCase() + "s") as AstralObjectType;
+    this.type = (type.toLowerCase() + 's') as AstralObjectType;
     this.value = value;
   }
 }
@@ -60,7 +58,7 @@ export class Polyanet extends AstralStrategy implements AstralObject {
     return axios.post(`/${this.type}`, postParams);
   }
 
-  verify(value: { type: number } | null): Boolean {
+  verify(value: { type: number } | null): boolean {
     return value?.type === 0;
   }
 }
@@ -80,7 +78,7 @@ export class Soloons extends AstralStrategy implements AstralObject {
     return axios.post(`/${this.type}`, postParams);
   }
 
-  verify(value: { type: number; color: string } | null): Boolean {
+  verify(value: { type: number; color: string } | null): boolean {
     return value?.type === 1 && value?.color === this.value;
   }
 }
@@ -100,7 +98,7 @@ export class Comeths extends AstralStrategy implements AstralObject {
     return axios.post(`/${this.type}`, postParams);
   }
 
-  verify(value: { type: number; direction: string } | null): Boolean {
+  verify(value: { type: number; direction: string } | null): boolean {
     return value?.type === 2 && value?.direction === this.value;
   }
 }
@@ -115,7 +113,7 @@ export class AstralFactory {
       case GoalCellType.COMETHS:
         return new Comeths(params);
       default:
-        throw new Error("Invalid astral object type");
+        throw new Error('Invalid astral object type');
     }
   }
 }

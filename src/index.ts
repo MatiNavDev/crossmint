@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { AbstralCrosser } from "./crosser";
+import dotenv from 'dotenv';
+import { AbstralCrosser } from './crosser';
 dotenv.config();
 
 async function doCrossPolyanet() {
@@ -7,10 +7,10 @@ async function doCrossPolyanet() {
   await CrosserInstance.initCrossGoal();
   await CrosserInstance.doCross();
 }
-console.time("doCrossPolyanet");
+console.time('doCrossPolyanet');
 doCrossPolyanet()
   .then(() => {
-    console.timeEnd("doCrossPolyanet");
-    console.log("Done!");
+    console.timeEnd('doCrossPolyanet');
+    console.log('Done!');
   })
   .catch((error) => console.error(error));

@@ -1,11 +1,6 @@
-import axios, { AxiosInstance } from "axios";
-import {
-  AstralFactory,
-  AstralObject,
-  AstralObjectType,
-  GoalCellType,
-} from "./astralObject";
-import { ErrorHandler, MAX_RETRY_REQUEST } from "./errorHandler";
+import axios, { AxiosInstance } from 'axios';
+import { AstralFactory, AstralObject, AstralObjectType, GoalCellType } from './astralObject';
+import { ErrorHandler, MAX_RETRY_REQUEST } from './errorHandler';
 
 const MAX_RETRY_VERIFICATION = 3;
 const MAX_DELAY_BACKOFF = 4000;
@@ -31,7 +26,7 @@ export class AbstralCrosser implements Crosser {
   constructor(candidateId: string) {
     this.candidateId = candidateId;
     this.axios = axios.create({
-      baseURL: "https://challenge.crossmint.io/api",
+      baseURL: 'https://challenge.crossmint.io/api',
     });
   }
 
@@ -54,8 +49,8 @@ export class AbstralCrosser implements Crosser {
     const astralObjects: AstralObject[] = [];
     this.goal.forEach((row, rowIndex) => {
       row.forEach((column: GoalCellType, columnIndex) => {
-        if (column === "SPACE") return;
-        const cellValues = column.split("_");
+        if (column === 'SPACE') return;
+        const cellValues = column.split('_');
 
         const astralObj = AstralFactory.create({
           row: rowIndex,
@@ -71,10 +66,7 @@ export class AbstralCrosser implements Crosser {
     await this.handleCross(astralObjects);
   }
 
-  private async handleCross(
-    astralObjects: AstralObject[],
-    retry: number = 0
-  ): Promise<void> {
+  private async handleCross(astralObjects: AstralObject[], retry = 0): Promise<void> {
     await this.handleDoingCross(astralObjects);
     await this.verifyCross(astralObjects, retry);
   }
@@ -97,15 +89,11 @@ export class AbstralCrosser implements Crosser {
       new Array(PARALLEL_REQUESTS).fill(1).forEach((_, amountToSum) => {
         if (index + amountToSum >= astralObjects.length) return;
         const astralObj = astralObjects[index + amountToSum];
-        postPromises.push(
-          astralObj.doCrossRequest(this.axios, this.candidateId)
-        );
+        postPromises.push(astralObj.doCrossRequest(this.axios, this.candidateId));
       });
 
       try {
-        console.log(
-          `Doing cross request for ${index} to ${index + PARALLEL_REQUESTS}`
-        );
+        console.log(`Doing cross request for ${index} to ${index + PARALLEL_REQUESTS}`);
         await Promise.all(postPromises);
         console.log(`Success for ${index} to ${index + PARALLEL_REQUESTS}`);
         index += PARALLEL_REQUESTS;
@@ -113,8 +101,7 @@ export class AbstralCrosser implements Crosser {
       } catch (error) {
         retryAmount++;
         await ErrorHandler.handleBackoffError(error, retryBackoff, retryAmount);
-        if (retryBackoff < MAX_DELAY_BACKOFF)
-          retryBackoff += INCREASE_DELAY_BACKOFF;
+        if (retryBackoff < MAX_DELAY_BACKOFF) retryBackoff += INCREASE_DELAY_BACKOFF;
         console.log(`Error for ${index} to ${index + PARALLEL_REQUESTS}`);
       }
     }
@@ -128,10 +115,7 @@ export class AbstralCrosser implements Crosser {
    * @param retry {number} The current amount of retries.
    * @returns {Promise<void>} A promise that will be resolved when the cross is verified.
    */
-  private async verifyCross(
-    astralObjects: AstralObject[],
-    retry: number
-  ): Promise<void> {
+  private async verifyCross(astralObjects: AstralObject[], retry: number): Promise<void> {
     const {
       data: {
         map: { content },
@@ -151,10 +135,10 @@ export class AbstralCrosser implements Crosser {
             (astralObj) =>
               `Row: ${astralObj.row}. Column: ${astralObj.column}. Type: ${astralObj.type}. Value: ${astralObj.value}.`
           )
-          .join("\n")}`
+          .join('\n')}`
       );
     } else {
-      console.log("All astral objects were saved.");
+      console.log('All astral objects were saved.');
     }
   }
 }
