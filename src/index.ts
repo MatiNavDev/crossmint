@@ -7,10 +7,8 @@ async function doCrossPolyanet() {
   await CrosserInstance.initCrossGoal();
   await CrosserInstance.doCross();
 }
-console.time('doCrossPolyanet');
 doCrossPolyanet()
   .then(() => {
-    console.timeEnd('doCrossPolyanet');
     console.log('Done!');
   })
   .catch((error) => console.error(error));
