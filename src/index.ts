@@ -1,14 +1,9 @@
 import dotenv from "dotenv";
-import { Cross, CrosserFactory, CrossType } from "./crosser";
+import { AbstralCrosser } from "./crosser";
 dotenv.config();
 
 async function doCrossPolyanet() {
-  const polyanets: Cross = {
-    type: CrossType.POLYANET,
-    candidateId: process.env.CANDIDATE_ID,
-  };
-
-  const CrosserInstance = new CrosserFactory(polyanets);
+  const CrosserInstance = new AbstralCrosser(process.env.CANDIDATE_ID);
   await CrosserInstance.initCrossGoal();
   await CrosserInstance.doCross();
 }
