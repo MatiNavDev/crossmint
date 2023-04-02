@@ -18,7 +18,7 @@ interface Crosser {
   doCross(): Promise<void>;
 }
 
-export class AbstralCrosser implements Crosser {
+export class AstralCrosser implements Crosser {
   private candidateId: string;
   private goal: string[][];
   private axios: AxiosInstance;
@@ -66,6 +66,12 @@ export class AbstralCrosser implements Crosser {
     await this.handleCross(astralObjects);
   }
 
+  /**
+   * This function verifies if the cross was done correctly. If not, calls the cross API again
+   * for the cells that were not configured correctly.
+   * @param astralObjects {AstralObject[]} The astral objects to save.
+   * @param retry {number} The number of times that the verification was called.
+   */
   private async handleCross(astralObjects: AstralObject[], retry = 0): Promise<void> {
     await this.handleDoingCross(astralObjects);
     await this.verifyCross(astralObjects, retry);
