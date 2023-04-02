@@ -111,7 +111,6 @@ export class AstralCrosser implements Crosser {
         console.log(`Error for ${index} to ${index + PARALLEL_REQUESTS}`);
       }
     }
-    console.log(index, retryBackoff, retryAmount);
   }
 
   /**
