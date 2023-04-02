@@ -16,3 +16,6 @@ dist/
 
 # Ignore package-lock.json file (if using npm)
 package-lock.json
+
+# Ignore .env file (if using dotenv)
+.env
