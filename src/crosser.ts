@@ -68,6 +68,7 @@ export class AbstralCrosser implements Crosser {
 
   private async handleCross(astralObjects: AstralObject[], retry: number = 0): Promise<void> {
     await this.handleDoingCross(astralObjects);
+
     await this.verifyCross(astralObjects, retry);
   }
 
