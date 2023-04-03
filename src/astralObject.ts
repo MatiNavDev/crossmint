@@ -21,26 +21,41 @@ interface AstralObjectParams {
 }
 
 export interface AstralObject {
-  row: number;
-  column: number;
-  type: AstralObjectType;
-  value: string;
-
+  getRow(): number;
+  getColumn(): number;
+  getType(): AstralObjectType;
+  getValue(): string;
   doCrossRequest(axios: AxiosInstance, candidateId: string): Promise<void>;
   verify(value: { type: number; color?: string; direction?: string } | null): boolean;
 }
 
 class AstralStrategy {
-  row: number;
-  column: number;
-  type: AstralObjectType;
-  value: string;
+  protected row: number;
+  protected column: number;
+  protected type: AstralObjectType;
+  protected value: string;
 
   constructor({ row, column, type, value }: AstralObjectParams) {
     this.row = row;
     this.column = column;
     this.type = (type.toLowerCase() + 's') as AstralObjectType;
     this.value = value;
+  }
+
+  getRow(): number {
+    return this.row;
+  }
+
+  getColumn(): number {
+    return this.column;
+  }
+
+  getType(): AstralObjectType {
+    return this.type;
+  }
+
+  getValue(): string {
+    return this.value;
   }
 }
 

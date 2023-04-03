@@ -128,7 +128,7 @@ export class AstralCrosser implements Crosser {
     } = await this.axios.get(`/map/${this.candidateId}`);
 
     const astralObjNotSaved = astralObjects.filter(
-      (astralObj) => !astralObj.verify(content[astralObj.row][astralObj.column])
+      (astralObj) => !astralObj.verify(content[astralObj.getRow()][astralObj.getColumn()])
     );
 
     if (astralObjNotSaved.length > 0 && retry < MAX_RETRY_VERIFICATION) {
@@ -138,7 +138,7 @@ export class AstralCrosser implements Crosser {
         `There are some abstral objects that were not saved.\n Astral Objects: \n${astralObjNotSaved
           .map(
             (astralObj) =>
-              `Row: ${astralObj.row}. Column: ${astralObj.column}. Type: ${astralObj.type}. Value: ${astralObj.value}.`
+              `Row: ${astralObj.getRow()}. Column: ${astralObj.getColumn()}. Type: ${astralObj.getType()}. Value: ${astralObj.getValue()}.`
           )
           .join('\n')}`
       );
